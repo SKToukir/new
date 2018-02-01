@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="@drawable/alert_style"
+    android:padding="20dp" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_gravity="center|top"
+            android:id="@+id/txtSuggestionLebel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="10dp"
+            android:text="Please give a title before save"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:padding="5dp"
+            android:hint="Title"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_width="200dp"
+            android:layout_height="35dp" />
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_button"
+                android:id="@+id/btnCancel"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:text="Cancel"
+                android:textStyle="bold"
+                android:textColor="#fff" />
+
+
+            <Button
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/round_button"
+                android:id="@+id/btnOk"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:text="Done"
+                android:textStyle="bold"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
