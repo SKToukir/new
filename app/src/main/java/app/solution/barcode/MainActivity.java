@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @SuppressLint("MissingPermission")
             @Override
