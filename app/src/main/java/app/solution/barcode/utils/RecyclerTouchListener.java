@@ -34,7 +34,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         });
     }
     private long mLastClickTime = System.currentTimeMillis();
-    private static final long CLICK_TIME_INTERVAL = 000;
+    private static final long CLICK_TIME_INTERVAL = 1000;
     @SuppressWarnings("deprecation")
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
