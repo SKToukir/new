@@ -48,6 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     private TextView barcodeValue;
     private LinearLayout linearLayout;
     private FrameLayout frameLayout;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initUI();
-
+        loadBannerAd();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -101,9 +104,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
 
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @SuppressLint("MissingPermission")
@@ -159,6 +159,13 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void loadBannerAd() {
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+    }
+
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
@@ -166,20 +173,15 @@ public class MainActivity extends AppCompatActivity
             //Here you can explain why you need this permission
             //Explain here why you need this permission
         }
-
-
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_GET_ACCOUNT);
-
     }
 
     private boolean isCameraPermissin() {
         //Getting the permission status
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-
         //If permission is granted returning true
         if (cameraPermission == PackageManager.PERMISSION_GRANTED)
             return true;
-
         //If permission is not granted returning false
         return false;
     }
@@ -201,9 +203,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 //Snackbar.make(view, "Permission Granted, Now you can access location data and camera.", Snackbar.LENGTH_LONG).show();
                 else {
-
                     //Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                             showMessageOKCancel("You need to allow access to both the permissions",
@@ -219,11 +219,9 @@ public class MainActivity extends AppCompatActivity
                             return;
                         }
                     }
-
                 }
                 break;
         }
-
     }
 
     private void initUI() {
@@ -369,7 +367,6 @@ public class MainActivity extends AppCompatActivity
 
     private static Camera getCamera(@NonNull CameraSource cameraSource) {
         Field[] declaredFields = CameraSource.class.getDeclaredFields();
-
         for (Field field : declaredFields) {
             if (field.getType() == Camera.class) {
                 field.setAccessible(true);
@@ -390,6 +387,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
         super.onDestroy();
         Log.d("LifeCycle", "OnDestroy");
         cameraSource.release();
@@ -398,6 +398,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
         super.onPause();
         Log.d("LifeCycle", "onPause");
         cameraSource.stop();
@@ -406,6 +409,9 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("MissingPermission")
     @Override
     protected void onResume() {
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         super.onResume();
         Log.d("LifeCycle", "onResume");
     }
@@ -463,7 +469,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 dialogConfirm.dismiss();
-
                 title = etTitle.getText().toString();
                 if (!title.equals("")) {
                     DBHandler db = new DBHandler(MainActivity.this);
@@ -477,7 +482,6 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(MainActivity.this, "Please give a title", Toast.LENGTH_LONG).show();
                 }
                 title = "";
-
             }
         });
 
@@ -531,7 +535,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static boolean isOnline(final Context ctx) {
-
         try {
             final ConnectivityManager cm = (ConnectivityManager) ctx
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -544,6 +547,5 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             return false;
         }
-
     }
 }

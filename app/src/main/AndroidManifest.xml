@@ -25,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="dc547e672ff8d151a7eaf7bad53b7466af0ae5d0" />
         <meta-data

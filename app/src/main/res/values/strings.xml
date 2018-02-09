@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">QR Scanner</string>
 
+    <string name="banner_home_footer">ca-app-pub-9590663615277504/5455963122</string>
+    <string name="interstitial_full_screen">ca-app-pub-9590663615277504/8148038273</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
