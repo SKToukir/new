@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class AdapterBarcodeData extends RecyclerView.Adapter<AdapterBarcodeData.
                showDialog(dbModelClass, position);
             }
         });
-        holder.imgShare.setOnClickListener(new View.OnClickListener() {
+        holder.shareLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                if (isOnline(mContext)){
@@ -80,7 +81,7 @@ public class AdapterBarcodeData extends RecyclerView.Adapter<AdapterBarcodeData.
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DBHandler db = new DBHandler(mContext);
-                        db.deleteContact(dbModelClass);
+                        db.deleteContact(dbModelClass.getId());
                         dbModelClassList.remove(position);
                         notifyDataSetChanged();
                         dialog.dismiss();
@@ -102,10 +103,11 @@ public class AdapterBarcodeData extends RecyclerView.Adapter<AdapterBarcodeData.
 
     public class MyAdapter extends RecyclerView.ViewHolder{
         private TextView txtTitle, txtDateTime, txtQuery;
-        private ImageView imgDelete, imgShare;
+        private ImageView imgDelete;
+        private LinearLayout shareLayout;
         public MyAdapter(View itemView) {
             super(itemView);
-            imgShare = itemView.findViewById(R.id.imgShare);
+            shareLayout = itemView.findViewById(R.id.shareLayout);
             imgDelete = itemView.findViewById(R.id.imgDelete);
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtQuery = itemView.findViewById(R.id.txtQuery);

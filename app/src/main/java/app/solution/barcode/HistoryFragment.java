@@ -122,24 +122,31 @@ public class HistoryFragment extends Fragment {
 
     private void showAlertDialog(final int position) {
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle("Search on browser");
+        alertDialog.setTitle("QR Scanner");
         alertDialog.setMessage(dbModelClassList.get(position).getScanQuery());
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Go", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Share", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 if (isOnline(getContext())){
-                    Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                    intent.putExtra(SearchManager.QUERY, dbModelClassList.get(position).getScanQuery());
-                    startActivity(intent);
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,
+                            dbModelClassList.get(position).getScanQuery());
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, "Share With"));
                 }else {
                     Toast.makeText(getContext(), "Please check your internet connection!",Toast.LENGTH_LONG).show();
                 }
             }
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                DBHandler db = new DBHandler(getContext());
+                db.deleteContact(dbModelClassList.get(position).getId());
+                dbModelClassList.remove(position);
+                adapter.notifyDataSetChanged();
                 alertDialog.dismiss();
             }
         });

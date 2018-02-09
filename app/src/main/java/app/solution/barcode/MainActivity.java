@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -127,13 +128,16 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
+                cameraSource.stop();
+                barcodeDetector.release();
             }
         });
 
         barcodeDetector.setProcessor(new Detector.Processor() {
+
             @Override
             public void release() {
+
             }
 
             @Override
@@ -262,14 +266,28 @@ public class MainActivity extends AppCompatActivity
                 .create()
                 .show();
     }
-
+    boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce){
+                super.onBackPressed();
+                return;
+            }else {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please press BACK again to exit", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce=false;
+                    }
+                }, 2000);
+            }
         }
     }
 
