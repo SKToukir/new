@@ -95,8 +95,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         initUI();
+
         loadBannerAd();
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -230,10 +233,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initUI() {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        imgFrame = findViewById(R.id.imageView3);
-        imgFrame.getLayoutParams().height = (int) (getScreenHeight()/1.5);
-        imgFrame.getLayoutParams().width = (int) (getScreenWidth()/1.5);
-        imgFrame.requestLayout();
+
 
         linearLayout = findViewById(R.id.linearLayout);
         imgReset = findViewById(R.id.imgReset);
@@ -442,7 +442,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.imgReset:
                 final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
                 imgReset.startAnimation(myAnim);
-                barcodeValue.setText("Processing...");
+                startActivity(new Intent(MainActivity.this, ScannerActivity.class));
+                //barcodeValue.setText("Processing...");
                 break;
             case R.id.imgSave:
                 final Animation myAnimSave = AnimationUtils.loadAnimation(this, R.anim.bounce);
@@ -530,40 +531,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(myAppLinkToMarket);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public double getScreenHeight() {
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-
-        return height;
-    }
-    public int getScreenWidth() {
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-
-        return width;
-    }
-
-    public static boolean isOnline(final Context ctx) {
-        try {
-            final ConnectivityManager cm = (ConnectivityManager) ctx
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            final NetworkInfo ni = cm.getActiveNetworkInfo();
-            if (ni != null) {
-                return ni.isConnectedOrConnecting();
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
         }
     }
 }
